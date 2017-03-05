@@ -6,10 +6,14 @@ import java.util.List;
 
 
 
+
 //import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 //import org.springframework.transaction.annotation.Transactional;
+
 
 
 
@@ -142,6 +146,11 @@ public class ItemOfClothingServiceImpl implements ItemOfClothingService{
 			String marking, Brand brand, TargetAudience targetAudience,
 			TypeOfClothing typeOfClothing, Size size, Color color) {
 		return itemOfClothingDao.findUnique(new BigDecimal(price.replace(',', '.')), itemName.getId(), new Integer (marking), brand.getId(), targetAudience.getId(), typeOfClothing.getId(), size.getId(), color.getId());
+	}
+
+	@Override
+	public Page<ItemOfClothing> findAll(Pageable pageable) {
+		return itemOfClothingDao.findAll(pageable);
 	}
 
 

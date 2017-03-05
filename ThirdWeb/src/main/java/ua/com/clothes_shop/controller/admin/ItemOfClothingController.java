@@ -5,6 +5,8 @@ package ua.com.clothes_shop.controller.admin;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,6 +44,7 @@ import ua.com.clothes_shop.service.TargetAudienceService;
 import ua.com.clothes_shop.service.TypeOfClothingService;
 import ua.com.clothes_shop.validator.ItemOfClothingValidator;
 
+import static ua.com.clothes_shop.util.ParamBuilder.*;
 @Controller
 @RequestMapping("/admin/ioc")
 @SessionAttributes("itemOfClothing")
@@ -87,7 +90,8 @@ public class ItemOfClothingController {
 	
 	//витягуємо всі значення з таблиць, які світяться зеленим коли навести на таблицю ItemOfClothing, для того щоб зробити селекти
 	@GetMapping
-	public String show(Model model){
+	public String show(Model model,@PageableDefault Pageable pageable){
+		model.addAttribute("page", itemOfClothingService.findAll(pageable));
 		model.addAttribute("itemsOfClothing", itemOfClothingService.findAll());
 		model.addAttribute("itemNames", itemNameService.findAll());
 		model.addAttribute("brands", brandService.findAll());
@@ -105,16 +109,16 @@ public class ItemOfClothingController {
 //	}
 
 	@GetMapping("/delete/{id}")
-	public String delete(@PathVariable int id){
+	public String delete(@PathVariable int id, @PageableDefault Pageable pageable){
 		itemOfClothingService.delete(id);
-		return "redirect:/admin/ioc";
+		return "redirect:/admin/ioc"+getParams(pageable);
 	}
 	
 	@GetMapping("/update/{id}")
-	public String update(@PathVariable int id, Model model){
+	public String update(@PathVariable int id, Model model, @PageableDefault Pageable pageable){
                    //так було до валідації:		model.addAttribute("itemOfClothing", itemOfClothingService.findOne(id)); //а тепер стало:
 		model.addAttribute("itemOfClothing", itemOfClothingService.findForm(id));
-		return show(model);
+		return show(model, pageable);
 	}
                //до валідації було так:	
 //	@PostMapping
@@ -125,11 +129,11 @@ public class ItemOfClothingController {
 //	}
 	
 	@PostMapping
-	public String save(@ModelAttribute("itemOfClothing") @Valid ItemOfClothingForm itemOfClothing,BindingResult br, Model model, SessionStatus status){
-		if(br.hasErrors()) return show(model);
+	public String save(@ModelAttribute("itemOfClothing") @Valid ItemOfClothingForm itemOfClothing,BindingResult br, Model model, SessionStatus status, @PageableDefault Pageable pageable){
+		if(br.hasErrors()) return show(model, pageable);
 		itemOfClothingService.save(itemOfClothing);
 		status.setComplete();
-		return "redirect:/admin/ioc";
+		return "redirect:/admin/ioc"+getParams(pageable);
 	}
 	
 //	@PostMapping
