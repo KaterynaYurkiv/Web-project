@@ -1,0 +1,225 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<div class="row">
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target="#myNavbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav">
+				    <li><a href="/admin/itemName">Item name</a></li>
+					<li><a href="/admin/brand">Brand</a></li>
+					<li><a href="/admin/toc">Type of clothing</a></li>
+					<li><a href="/admin/targeta">Target audience</a></li>
+					<li><a href="/admin/color">Color</a></li>
+					<li><a href="/admin/size">Size</a></li>
+					<li class="active"><a href="/admin/ioc">Item of clothing</a><span
+						class="sr-only">(current)</span></li>
+					<li><a href="/admin/customer">Customer</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</div>
+<div class="row">
+	<div class="col-md-3 col-xs-12"></div>
+	<div class="col-md-7 col-xs-12">
+	    <div class="row">
+			<div class="col-md-12 col-xs-12">
+				<form:form class="form-horizontal" action="/admin/ioc" method="POST" modelAttribute="itemOfClothing">
+				    <!-- тут пишемо дів для помилки бо це верхнє перше поле і над ним будемо виводити повідомлення про те, що такий об'єкт вже був в базі, якщо це відповідатиме дійсності -->
+				    <div class="form-group">
+						<label for="itemName" style="color:red;text-align:left;" class="col-sm-offset-2 col-sm-10 control-label"><form:errors path="itemName"/></label>
+					</div>
+				    <div class="form-group">
+    					<label for="itemName" class="col-sm-2 control-label">Item Name</label>
+    					<div class="col-sm-10">
+      						<form:select class="form-control" path="itemName" id="itemName" items="${itemNames}" itemValue="id" itemLabel="name"/>
+    					</div>
+  					</div>
+  					<!-- тут пишемо дів для можливої помилки, якщо некоректно буде введене маркування -->
+  					<div class="form-group">
+ 						<label for="marking" style="color:red;text-align:left;" class="col-sm-offset-2 col-sm-10 control-label"><form:errors path="marking"/></label>
+ 					</div>
+  					<div class="form-group">
+  					<div class="form-group">
+    					<label for="marking" class="col-sm-2 control-label">Marking</label>
+    					<div class="col-sm-10">
+      						<form:input type="text" class="form-control" path="marking" id="marking"/>
+    					</div>
+  					</div>
+  					<!-- тут пишемо дів для можливої помилки, якщо некоректно буде введена ціна -->
+  					<div class="form-group">
+ 						<label for="price" style="color:red;text-align:left;" class="col-sm-offset-2 col-sm-10 control-label"><form:errors path="price"/></label>
+ 					</div>
+  					<div class="form-group">
+    					<label for="price" class="col-sm-2 control-label">Price</label>
+    					<div class="col-sm-10">
+      						<form:input type="text" class="form-control" path="price" id="price"/>
+    					</div>
+  					</div>
+					<div class="form-group">
+    					<label for="brand" class="col-sm-2 control-label">Brand</label>
+    					<div class="col-sm-10">
+      						<form:select class="form-control" path="brand" id="brand" items="${brands}" itemValue="id" itemLabel="brandName"/>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label for="targetAudience" class="col-sm-2 control-label">Target Audience</label>
+    					<div class="col-sm-10">
+      						<form:select class="form-control" path="targetAudience" id="targetAudience" items="${targetAudiences}" itemValue="id" itemLabel="category"/>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label for="typeOfClothing" class="col-sm-2 control-label">Type Of Clothing</label>
+    					<div class="col-sm-10">
+      						<form:select class="form-control" path="typeOfClothing" id="typeOfClothing" items="${typesOfClothing}" itemValue="id" itemLabel="itemType"/>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label for="color" class="col-sm-2 control-label">Color</label>
+    					<div class="col-sm-10">
+      						<form:select class="form-control" path="color" id="color" items="${colors}" itemValue="id" itemLabel="color"/>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label for="size" class="col-sm-2 control-label">Size</label>
+    					<div class="col-sm-10">
+      						<form:select class="form-control" path="size" id="size" items="${sizes}" itemValue="id" itemLabel="size"/>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<div class="col-sm-offset-2 col-sm-10">
+      						<button type="submit" class="btn btn-default">Create</button>
+    					</div>
+  					</div>
+				</form:form>
+			</div>
+		</div>
+		<%-- <div class="row">
+			<div class="col-md-12 col-xs-12">
+				<form class="form-horizontal" action="/admin/ioc" method="POST">
+					<div class="form-group">
+    					<label for="itemName" class="col-sm-2 control-label">Item Name</label>
+    					<div class="col-sm-10">
+      						<select class="form-control" name="itemNameId" id="itemName">
+      							<c:forEach items="${itemNames}" var="itemName">
+      								<option value="${itemName.id}">${itemName.name}</option>
+      							</c:forEach>
+      						</select>
+    					</div>
+  					</div>
+					<div class="form-group">
+    					<label for="marking" class="col-sm-2 control-label">Marking</label>
+    					<div class="col-sm-10">
+      						<input type="text" class="form-control" name="marking" id="marking">
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label for="price" class="col-sm-2 control-label">Price</label>
+    					<div class="col-sm-10">
+      						<input type="text" class="form-control" name="price" id="price">
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label for="brand" class="col-sm-2 control-label">Brand</label>
+    					<div class="col-sm-10">
+      						<select class="form-control" name="brandId" id="brand">
+      							<c:forEach items="${brands}" var="brand">
+      								<option value="${brand.id}">${brand.brandName}</option>
+      							</c:forEach>
+      						</select>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label for="targetAudience" class="col-sm-2 control-label">Target Audience</label>
+    					<div class="col-sm-10">
+      						<select class="form-control" name="targetAudienceId" id="targetAudience">
+      							<c:forEach items="${targetAudiences}" var="targetAudience">
+      								<option value="${targetAudience.id}">${targetAudience.category}</option>
+      							</c:forEach>
+      						</select>
+    					</div>
+  					</div> 
+  					<div class="form-group">
+    					<label for="typeOfClothing" class="col-sm-2 control-label">Type of clothing</label>
+    					<div class="col-sm-10">
+      						<select class="form-control" name="typeOfClothingId" id="typeOfClothing">
+      							<c:forEach items="${typesOfClothing}" var="typeOfClothing">
+      								<option value="${typeOfClothing.id}">${typeOfClothing.itemType}</option>
+      							</c:forEach>
+      						</select>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label for="size" class="col-sm-2 control-label">Size</label>
+    					<div class="col-sm-10">
+      						<select class="form-control" name="sizeId" id="size">
+      							<c:forEach items="${sizes}" var="size">
+      								<option value="${size.id}">${size.size}</option>
+      							</c:forEach>
+      						</select>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label for="color" class="col-sm-2 control-label">Color</label>
+    					<div class="col-sm-10">
+      						<select class="form-control" name="colorId" id="color">
+      							<c:forEach items="${colors}" var="color">
+      								<option value="${color.id}">${color.color}</option>
+      							</c:forEach>
+      						</select>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<div class="col-sm-offset-2 col-sm-10">
+      						<button type="submit" class="btn btn-default">Create</button>
+    					</div>
+  					</div>
+				</form>
+			</div>
+		</div>--%>
+		<div class="row">
+			<div class="col-md-2 col-xs-2"><h4>Item name</h4></div>
+			<div class="col-md-1 col-xs-1"><h4>Marking</h4></div>
+			<div class="col-md-1 col-xs-1"><h4>Price</h4></div>			
+			<div class="col-md-1 col-xs-1"><h4>Brand</h4></div>
+			<div class="col-md-1 col-xs-1"><h4>Target audience</h4></div>
+			<div class="col-md-1 col-xs-1"><h4>Type</h4></div>
+			<div class="col-md-1 col-xs-1"><h4>Color</h4></div>
+			<div class="col-md-1 col-xs-1"><h4>Size</h4></div>
+			<div class="col-md-3 col-xs-3"><h4>Options</h4></div>
+		</div>
+<!-- 		спеціальний тег для роботи з всім що можна прогорнути а точніше з тим що імплементує Iterator<T> -->
+<!-- 		items -- це посилання на колекцію, ім'я потрібно  вказувати те яке ви передали в метод addAttribute першим параметром (в BrandController.java)-->
+<!-- 		var -- це назва одного елемента колекції доступна лише в середині парного тегу c:forEach -->
+			<c:forEach items="${itemsOfClothing}" var="itemOfClothing">
+				<div class="row">
+<!-- 					тут все так само як на сервлетах -->
+					<div class="col-md-2 col-xs-2">${itemOfClothing.itemName.name}</div>
+					<div class="col-md-1 col-xs-1">${itemOfClothing.marking}</div>
+					<div class="col-md-1 col-xs-1">${itemOfClothing.price}</div>
+					<div class="col-md-1 col-xs-1">${itemOfClothing.brand.brandName}</div>
+					<div class="col-md-1 col-xs-1">${itemOfClothing.targetAudience.category}</div>
+					<div class="col-md-1 col-xs-1">${itemOfClothing.typeOfClothing.itemType}</div>
+					<div class="col-md-1 col-xs-1">${itemOfClothing.color.color}</div>
+					<div class="col-md-1 col-xs-1">${itemOfClothing.size.size}</div>
+					<div class="col-md-3 col-xs-3"><a class="btn btn-warning" href="/admin/ioc/update/${itemOfClothing.id}">update</a>
+					                               <a class="btn btn-danger" href="/admin/ioc/delete/${itemOfClothing.id}">delete</a>
+					</div>
+				</div>
+			</c:forEach>
+	</div>
+	<div class="col-md-2 col-xs-12"></div>
+</div>
+<script>
+	$('label').each(function() {
+		if(!$(this).html()) $(this).parent('div').hide();
+	});
+</script>
